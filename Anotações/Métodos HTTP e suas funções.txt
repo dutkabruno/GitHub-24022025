@@ -1,0 +1,21 @@
+GET	
+Solicita dados; Usado para recuperar informações do servidor. Os dados são enviados na URL e visíveis no histórico do navegador. 
+Exemplo: Buscar produtos em um site.
+
+POST	
+Submeter dados; Envia informações ao servidor para criação de um novo recurso ou envio de formulários. Os dados são enviados no corpo da requisição. Exemplo: Enviar um formulário de cadastro.
+
+PUT	
+Alteração completa; Atualiza um recurso no servidor, substituindo-o completamente. Exemplo: Atualizar um perfil de usuário com novos dados.
+
+DELETE	
+Excluir um recurso; Remove um recurso do servidor. Exemplo: Deletar uma conta de usuário.
+
+CONNECT	
+Cria um túnel seguro; Usado para abrir um canal seguro entre cliente e servidor, geralmente para proxy HTTPS. Exemplo: Aplicativos bancários podem usar para estabelecer conexões seguras.
+
+OPTIONS	
+Retorna informações sobre os métodos permitidos; Permite descobrir quais métodos um servidor aceita para um recurso. Exemplo: Um navegador pode perguntar ao servidor quais métodos são aceitos antes de enviar uma requisição.
+
+PATCH	
+Alteração parcial; Similar ao PUT, mas modifica apenas parte de um recurso ao invés de sobrescrevê-lo completamente. Exemplo: Atualizar apenas o endereço de entrega em um pedido, sem modificar outros dados da compra.

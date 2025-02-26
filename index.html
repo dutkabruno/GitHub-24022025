@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de Usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: rgb(60,60,60);">
+    <div class="container mt-5 py-5">
+        <h2 class="container-title text-center mb-4 text-white">🕵🏻‍♂️ Ache o Usuário</h2>
+        
+        <!-- Campo de entrada e botões -->
+        <div class="input mb-3 row">
+            <input type="number" id="userId" class="form-control" placeholder="Digite o ID do usuário (1 a 10)">
+        </div>
+        <div class="input mb-3 row text-white">
+            <button id="encontrarButton" class="btn btn-primary">🔍 Encontrar</button>
+        </div>
+        <div class="input mb-3 row text-white">
+            <button id="deleteButton" class="btn btn-danger">🗑️ Apagar Lista</button>
+        </div>
+
+        <!-- Ícone de carregamento -->
+        <div id="loading" class="text-center text-white my-3" style="display: none;">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div id="errorMessage" class="alert alert-danger" style="display: none;">Usuário não encontrado! Tente outro ID. 😉</div>
+
+        <!-- Área para exibir os resultados -->
+        <div id="userInfo" class="mt-4"></div>
+    </div>
+
+    <script>
+        document.getElementById("encontrarButton").addEventListener("click", function() {
+            let userId = document.getElementById("userId").value;
+            let userInfo = document.getElementById("userInfo");
+            let errorMessage = document.getElementById("errorMessage");
+            let loading = document.getElementById("loading");
+
+            if (!userId) return;
+
+            // Exibe o carregamento
+            loading.style.display = "block";
+
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Usuário não encontrado");
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    // Esconde a mensagem de erro, pois um usuário foi encontrado
+                    errorMessage.style.display = "none";
+
+                    // Adiciona o usuário encontrado à lista sem apagar os anteriores
+                    userInfo.innerHTML += `
+                        <div class="container" style='background-color: rgb(79,79,79); margin-bottom: 10px; padding: 10px; border-radius: 5px;'>
+                            <div class="text-white">
+                                <h4 class="container-title text-center">${user.name}</h4>
+                            </div>
+                            <div class='text-white'>
+                                <p class="card-text"><b>Dados:</b><br><i>Nome:</i> ${user.username}<br><i>Email:</i> ${user.email}<br><i>Telefone:</i> ${user.phone} <br><i>Website:</i> ${user.website} </p>
+                                <p class="card-text"><b>Endereço:</b> <br> <i>CEP:</i> ${user.address.zipcode}<br><i>Cidade:</i> ${user.address.city}<br><i>Rua:</i> ${user.address.street}<br><i>Coordenadas:</i> Lat: ${user.address.geo.lat}; Lgt: ${user.address.geo.lng};</p>
+                                <p class="card-text"><b>Local de Trabalho:</b><br><i>Empresa:</i> ${user.company.name}<br><i>Slogan:</i> ${user.company.catchPhrase}<br><i>Serviço:</i> ${user.company.bs}</p>
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    // Se der erro, exibe a mensagem sem apagar a lista de usuários já encontrados
+                    errorMessage.style.display = "block";
+                })
+                .finally(() => {
+                    // Esconde o carregamento após a busca (seja sucesso ou erro)
+                    loading.style.display = "none";
+                });
+        });
+
+        document.getElementById("deleteButton").addEventListener("click", function() {
+            document.getElementById("userInfo").innerHTML = "";
+            document.getElementById("errorMessage").style.display = "none"; // Esconde erro ao apagar a lista
+        });
+    </script>
+
+    <footer class="text-white text-center py-3">
+        <p>&copy;2025 findtheuser</p>
+    </footer>
+</body>
+</html>
